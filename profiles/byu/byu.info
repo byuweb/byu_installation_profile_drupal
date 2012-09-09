@@ -1,0 +1,54 @@
+name = BYU Drupal Installation
+description = Installs and configures your site with the BYU theme as well as a number of necessary modules and settings.
+version = VERSION
+core = 7.x
+dependencies[] = block
+dependencies[] = color
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = dashboard
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = dblog
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = toolbar
+dependencies[] = update
+dependencies[] = overlay
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = rdf
+;Profile Installation Specific Modules
+dependencies[] = backup_migrate
+dependencies[] = byu_feature_slider
+dependencies[] = calendar
+dependencies[] = cas
+dependencies[] = ckeditor
+dependencies[] = ckeditor_link
+dependencies[] = ctools
+dependencies[] = date
+dependencies[] = features
+dependencies[] = imce
+dependencies[] = link
+dependencies[] = menu_expanded
+dependencies[] = pathauto
+dependencies[] = simple_megamenu
+dependencies[] = transliteration
+dependencies[] = token
+dependencies[] = views
+dependencies[] = views_ui
+;Profile Installation Specific Themes (not sure if this works or no
+dependencies[] = byu
+;Profile Installation Specific Files
+files[] = byu.profile
+
+; Information added by drupal.org packaging script on 2011-12-05
+version = "7.10"
+project = "drupal"
+datestamp = "1323125439"
