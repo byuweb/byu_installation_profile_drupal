@@ -54,8 +54,10 @@
 			<div id="breadcrumb"><?php print $breadcrumb; ?></div>
 		<?php endif; ?>
 		
-		<div id="feature"><?php print byu_get_features(); ?></div>
-		
+		<?php if (module_exists('byu_feature_slider')):
+                          print '<div id="feature">' . byu_get_features() . '</div>';
+                      endif; ?>
+                 
 		<?php print render($title_prefix); ?>
 		
 		<?php if ($title): ?>
