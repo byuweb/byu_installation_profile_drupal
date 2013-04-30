@@ -1,0 +1,344 @@
+<?php
+/**
+ * @file
+ * A calendar module that will pull from the BYU Calendar feed and display the formatted list in a block. 
+ * It uses a cURL request, so it is a server-side request.
+ * 
+ * When the module is activated, Drupal will call: 
+ * 1. Block hook (byu_calendar_block_view) to create the block display
+ * 2. Pull settings from DB (days & categories)
+ * 3. Make Calendar Request (calendarCall)
+ * 4. Format content (calendarFormat)
+ * 5. Output contact into the block display
+ * 6. When user clicks on link, it will call the byu_calendar_page passing in the EventID as an arguement
+ * 7. The calendar_page will call the event details and display it on the site.
+ */
+
+/**
+ * Implements hook_help
+ * 
+ * Displays help and module information.
+ * 
+ * @param type $path
+ * @param type $arg 
+ */
+function byu_calendar_help($path, $arg) {
+    switch ($path) {
+    case "admin/help#byu_calendar":
+      return '<p>' . t("Choose feeds and place the module generated block on your site") . '</p>';
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_info()
+ * 
+ * This function declares the existance of a block.
+ */
+function byu_calendar_block_info(){
+    $blocks['byu_calendar'] = array(
+    'info' => t('BYU Calendar'), //The name that will appear in the block list.
+    'cache' => DRUPAL_CACHE_PER_ROLE, //Default
+  );
+  return $blocks;
+
+}
+
+/**
+* Makes a curl request to the Calendar API and gets back JSON.
+* 
+* @param type $numOfDays Number of days to retrieve
+* @param type $categories String of category IDs to be retrieved
+* @return string associative array object of events.
+*/
+function calendarCall($numOfDays, $categories){
+
+    //Create today's date in the correct format to submit in the URL parameter
+    $endDate = date('m-d-Y', strtotime("+".$numOfDays." days"));
+
+    $ch = curl_init("http://calendar.byu.edu/api/Events?enddate=".$endDate."&categories=".$categories);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, Array('Accept: application/json', 'charset=utf-8'));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+    // grab URL and pass it to the browser        
+    $result = curl_exec($ch);
+
+    // close cURL resource, and free up system resources
+    curl_close($ch);
+
+    //returns as a PHP Array
+    return json_decode($result);
+}
+
+/**
+* Makes a curl request to the Calendar service and gets back a singular event.
+* 
+* @param type $numOfDays Number of days to retrieve
+* @param type $categories String of category IDs to be retrieved
+* @return string associative array object of a single event.
+*/
+function eventCall($eventID){
+
+	//Make the cURL Call out to the calendar for the specific event
+	$ch = curl_init('http://calendar.byu.edu/api/Events/'.$eventID);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, Array('Accept: application/json', 'charset=utf-8'));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+    // grab URL and pass it to the browser        
+    $result = curl_exec($ch);
+
+    // close cURL resource, and free up system resources
+    curl_close($ch);
+	
+    return json_decode($result);
+}
+
+/**
+* Takes the results of the cURL request and formats it into HTML output indentical to the format of the BYU Home page.  
+* @param type $array the JSON_decoded array from the BYU Calendar.
+* @return string HTML output in the same style as seen on the BYU Homepage.
+*/
+function calendarFormat($calArray){
+	global $base_url; //Gets the website base url to build the links.
+    //Create the current day to track the date for the loop
+    $currentDay=null;
+    $first=0; //counter to prevent closing the first div.
+    $stringBuilder = ''; //String Builder for HTML to return.
+    
+    if (empty($calArray))
+		return 'No Upcoming events';
+	
+    //Iterates through the array of events.
+    foreach($calArray as $value){  
+		//Get the Time data into useable format. It is formatted in ISO8601 in the JSON. 
+
+		$eventDateTime = DateTime::createFromFormat('Y-m-d\TG:i:s', $value->StartDateTime);
+
+		//Group events by Date:
+		//If event isn't the same day as the rest of the events.
+		if ($currentDay != $eventDateTime->format('j M, l')) {                        
+			if ($first++!=0)
+				$stringBuilder .= '</div>'; 
+			//Set the group day to the latest day
+			$currentDay = $eventDateTime->format('j M, l');
+
+			$stringBuilder .= '<div class="day">';
+			$stringBuilder .= '<h3><span class="date">'.$eventDateTime->format('j').'</span>'.$eventDateTime->format('M, l').'</h3>';
+		}
+
+		//This references to the calendar site directly. To be used for the homepage.
+		# $stringBuilder .= '<a href="http://calendar.byu.edu/#event/'.$value->ShortUrl.'|'.$value->OccurrenceId.'">'. $value->Title.'</a>';
+		//
+		//This references to the module calendar event page so users will stay on the department website and not redirect to the calendar site.
+		$stringBuilder .= '<a href="'.$base_url.'/calendar/'.$value->OccurrenceId.'">'.$value->Title.'</a>';
+
+		$eventTime = ($value->AllDay) ? "All Day" : $eventDateTime->format('g:i A'); 
+		$stringBuilder .= '<span class="time">'. $eventTime .'</span>';
+
+    } //end foreach    
+
+	$stringBuilder .= '</div>'; //.day
+
+	return $stringBuilder;
+
+} //end calendarFormat()
+
+/**
+*Calls the categories of the calendar
+*/
+function categoryCall(){
+	if (function_exists('curl_init')){
+    $ch = curl_init('http://calendar.byu.edu/api/Categories');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, Array('Accept: application/json', 'charset=utf-8'));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+    // grab URL and pass it to the browser        
+    $result = curl_exec($ch);
+
+    // close cURL resource, and free up system resources
+    curl_close($ch);
+
+    //returns as a PHP Array
+    $json_array =  json_decode($result);
+
+    foreach($json_array as $catObj){
+		$catName[$catObj->CategoryId] = $catObj->Name;
+    }
+
+    return $catName;
+	} else {
+		drupal_set_message($message = t('The BYU Calendar module requires the PHP <a href="http://php.net/manual/en/curl.setup.php">cURL</a> library.'), $type = 'error');
+	}
+}
+
+/**
+ * Implements hook_block_view
+ * 
+ * Displays the formatted calendar feed into the block.
+ * @param type $delta 
+ */
+function byu_calendar_block_view($delta = '') {
+	switch($delta){
+		case 'byu_calendar':
+			$block['subject'] = t('Calendar');
+			if(user_access('access content')){
+				$numOfDays = variable_get('byu_calendar_days');
+				//Days minus one becuase it already starts on 1
+				$numOfDays = $numOfDays-1;
+	 
+				//Iterate through the array and get only the selected categories
+				$categories = variable_get('byu_calendar_categories');
+				$selectedCategories=''; 
+				
+				if (!empty($categories)){
+					foreach($categories as $selected){
+						if ($selected!=0)
+							$selectedCategories .= $selected.','; 
+					}
+				}
+	 
+				//Make the cURL request with the number of days desired.
+				$result = calendarCall($numOfDays, $selectedCategories);                
+        
+				//Print the formatted results.
+				$block['content'] =  '<div id="calendar">'.calendarFormat($result).'</div>';
+			}
+			
+    return $block;
+	
+	}
+}
+
+/**
+ * Creates a simple page where users can view the calendar event on the department's site instead of being redirected to the BYU Calendar site.
+ * @return type 
+ */
+function byu_calendar_page($eventID) {
+
+	if (!is_numeric($eventID)) {
+		return array('#markup' => '<p>' . t('Invalid Event. Please go back and try again') . '</p>');
+	}
+	
+	$event = eventCall($eventID);
+
+	if (empty($event))
+			return array('#markup' => '<p>' . t('No such event found. Please go back and try again.') . '</p>');
+	
+	drupal_set_title($event->Title);
+
+	//== Build the Various Parts of the HTML output --//
+	//Time
+	if ($event->AllDay){
+		$time = "All Day"; 
+	} else {
+		$startTime = DateTime::createFromFormat('Y-m-d\TG:i:s', $event->StartDateTime)->format('g:i A');
+		$time = $startTime;
+		if (!empty($event->EndDateTime)){
+			$endTime = DateTime::createFromFormat('Y-m-d\TG:i:s', $event->EndDateTime)->format('g:i A');
+			$time .= ' - '.$endTime;
+		}
+	}
+	
+
+	//Map Link
+	if (!empty($event->Latitdue) || !empty($event->Longitude)){
+		$map = '- <a href="http://maps.google.com?q='.$event->Latitude.','.$event->Longitude.'&z=18" target="blank">View Map</a>';
+	} else {
+		$map = '';
+	}
+	
+	//I'm using Drupal Rendable arrayes here.
+	$display =  array(
+    'first_para' => array(
+      '#type' => 'markup',
+	  '#markup' => '<div id="event"><img src="http://calendar.byu.edu/'.$event->ImgUrl.'" alt"'.$event->ImgAlt.'"/>
+					<p class="time">'.$time.'</p>'.
+					'<p class="location">'.$event->LocationName.' '.$map.'</p>'.
+					$event->Description.'</div>'
+    ),
+  );
+	return $display;
+
+}
+
+/**
+ * Creates the the calendar event page
+ * Creates an item on the admin/setings page
+ * 
+ * Implements hook_menu().
+ */
+function byu_calendar_menu() {
+	$items = array();
+
+	//Creates a page where 
+	$items['calendar/%'] = array(
+		'title' => 'BYU Calendar Error',
+		'page callback' => 'byu_calendar_page',
+		'page arguments' => array(1),
+		'access callback' => TRUE,
+	);
+  
+	$items['admin/config/services/byu_calendar'] = array(
+		'title' => 'BYU Calendar',
+		'description' => 'Configuration for the BYU Calendar module',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('byu_calendar_form'),
+		'access arguments' => array('access administration pages'),
+		'type' => MENU_NORMAL_ITEM,
+	);
+	
+	return $items;
+}
+
+/**
+ * Page callback: BYU Calendar settings. This is the form that admins will fill out to specify days and categories to pull from the feed.
+ * Uses Drupal Default (system_settings_form) to save variables
+ * 
+ * @see byu_calendar_menu()
+ */
+function byu_calendar_form($form, &$form_state) {
+  $form['description'] = array(
+    '#type' => 'item',
+    '#title' => t('BYU Calendar Module Settings'),
+    '#description' => t('Configure the settings of the BYU Calendar Module'),
+  );
+    
+  $form['byu_calendar_days'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number of days to retrieve'),
+    '#default_value' => variable_get('byu_calendar_days', 5),
+    '#size' => 2,
+    '#maxlength' => 3,
+    '#description' => t('The number of days to pull from the calendar'),
+    '#required' => TRUE,
+  );
+ 
+  $form['byu_calendar_categories'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Categories Filter'),
+    '#description' => t('Select all categories you want to pull from the calendar. If a parent category is selected, all sub-cateogories are selected. Leave blank to select all.'),  
+    '#options' => categoryCall(),
+	'#default_value' => is_array(variable_get('byu_calendar_categories')) ? variable_get('byu_calendar_categories') : array() , //Populates the form again with previously selected categories
+  
+);
+  
+	return system_settings_form($form);
+}
+
+/**
+ * Implements validation from the Form API.
+ * 
+ * @param $form
+ *   A structured array containing the elements and properties of the form.
+ * @param $form_state
+ *   An array that stores information about the form's current state 
+ *   during processing.
+ */
+function byu_calendar_form_validate($form, &$form_state){
+	$numDays = $form_state['values']['byu_calendar_days'];
+	if (!is_numeric($numDays)){
+		form_set_error('byu_calendar_days', t('You must enter a number for the days to pull.'));
+	} else if ($numDays <= 0){
+		form_set_error('byu_calendar_days', t('Number of days must be positive.'));
+	}
+}
