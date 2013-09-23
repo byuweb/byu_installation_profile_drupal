@@ -68,7 +68,7 @@ function byu_install() {
 // Any themes without keys here will get numeric keys and so will be enabled,
   // but not placed into variables.
   $enable = array(
-   'theme_default' => 'BYU2',
+   'theme_default' => 'byu',
    'admin_theme' => 'seven'
    );
    theme_enable($enable);
@@ -83,7 +83,7 @@ function byu_install() {
   theme_disable(array('bartik'));
   
   // Enable some standard blocks.
-  $default_theme = variable_get('theme_default', 'BYU2');
+  $default_theme = variable_get('theme_default', 'byu');
   $admin_theme = 'seven';
   $values = array(
     array(
