@@ -8,7 +8,7 @@ function byu_calendar_enable() {
 		drupal_set_message($message = t('You don\'t have cURL enabled on your server. The BYU Calendar module requires the PHP <a href="http://php.net/manual/en/curl.setup.php">cURL</a> library.'), $type = 'error');
 		module_disable(array('byu_calendar'));
 	} else { 
-		drupal_set_message($message = t('The BYU Calendar module was successfully enabled.'), $type = 'status');
+		//drupal_set_message($message = t('The BYU Calendar module was successfully enabled.'), $type = 'status');
 	}
 }
 
@@ -18,4 +18,5 @@ function byu_calendar_enable() {
 function byu_calendar_uninstall() {
 	variable_del('byu_calendar_days');
 	variable_del('byu_calendar_categories');
+	variable_del('byu_calendar_featured');
 }

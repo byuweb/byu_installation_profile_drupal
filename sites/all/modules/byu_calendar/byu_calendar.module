@@ -25,7 +25,7 @@
 function byu_calendar_help($path, $arg) {
     switch ($path) {
     case "admin/help#byu_calendar":
-      return '<p>' . t("Choose feeds and place the module generated block on your site") . '</p>';
+      return '<p>' . t("Select the calendar categories you want to show and place the module-generated block on your site") . '</p>';
       break;
   }
 }
@@ -52,7 +52,6 @@ function byu_calendar_block_info(){
 * @return string associative array object of events.
 */
 function calendarCall($numOfDays, $categories){
-
     //Create today's date in the correct format to submit in the URL parameter
     $endDate = date('m-d-Y', strtotime("+".$numOfDays." days"));
 
@@ -72,13 +71,12 @@ function calendarCall($numOfDays, $categories){
 
 /**
 * Makes a curl request to the Calendar service and gets back a singular event.
-* 
+* @param type $eventID the ID of the event for which you are querying the details
 * @param type $numOfDays Number of days to retrieve
 * @param type $categories String of category IDs to be retrieved
 * @return string associative array object of a single event.
 */
 function eventCall($eventID){
-
 	//Make the cURL Call out to the calendar for the specific event
 	$ch = curl_init('http://calendar.byu.edu/api/Events/'.$eventID);
     curl_setopt($ch, CURLOPT_HTTPHEADER, Array('Accept: application/json', 'charset=utf-8'));
@@ -104,14 +102,18 @@ function calendarFormat($calArray){
     $currentDay=null;
     $first=0; //counter to prevent closing the first div.
     $stringBuilder = ''; //String Builder for HTML to return.
-    
+    $isFeatured = variable_get('byu_calendar_featured');
+	
     if (empty($calArray))
 		return 'No Upcoming events';
 	
     //Iterates through the array of events.
     foreach($calArray as $value){  
+		
+		if (!empty($isFeatured)){
+			if ($value->IsFeatured){
+		
 		//Get the Time data into useable format. It is formatted in ISO8601 in the JSON. 
-
 		$eventDateTime = DateTime::createFromFormat('Y-m-d\TG:i:s', $value->StartDateTime);
 
 		//Group events by Date:
@@ -125,16 +127,41 @@ function calendarFormat($calArray){
 			$stringBuilder .= '<div class="day">';
 			$stringBuilder .= '<h3><span class="date">'.$eventDateTime->format('j').'</span>'.$eventDateTime->format('M, l').'</h3>';
 		}
-
+		
 		//This references to the calendar site directly. To be used for the homepage.
-		# $stringBuilder .= '<a href="http://calendar.byu.edu/#event/'.$value->ShortUrl.'|'.$value->OccurrenceId.'">'. $value->Title.'</a>';
-		//
+		//$stringBuilder .= '<a href="http://calendar.byu.edu/#event/'.$value->ShortUrl.'|'.$value->OccurrenceId.'">'. $value->Title.'</a>';
+		
 		//This references to the module calendar event page so users will stay on the department website and not redirect to the calendar site.
 		$stringBuilder .= '<a href="'.$base_url.'/calendar/'.$value->OccurrenceId.'">'.$value->Title.'</a>';
 
 		$eventTime = ($value->AllDay) ? "All Day" : $eventDateTime->format('g:i A'); 
 		$stringBuilder .= '<span class="time">'. $eventTime .'</span>';
+		}
+			
+		} else {
+			
+			//Get the Time data into useable format. It is formatted in ISO8601 in the JSON. 
+			$eventDateTime = DateTime::createFromFormat('Y-m-d\TG:i:s', $value->StartDateTime);
 
+			//Group events by Date:
+			//If event isn't the same day as the rest of the events.
+			if ($currentDay != $eventDateTime->format('j M, l')) {                        
+				if ($first++!=0)
+					$stringBuilder .= '</div>'; 
+				//Set the group day to the latest day
+				$currentDay = $eventDateTime->format('j M, l');
+
+				$stringBuilder .= '<div class="day">';
+				$stringBuilder .= '<h3><span class="date">'.$eventDateTime->format('j').'</span>'.$eventDateTime->format('M, l').'</h3>';
+			}
+
+			//This references to the module calendar event page so users will stay on the department website and not redirect to the calendar site.
+				$stringBuilder .= '<a href="'.$base_url.'/calendar/'.$value->OccurrenceId.'">'.$value->Title.'</a>';
+
+			$eventTime = ($value->AllDay) ? "All Day" : $eventDateTime->format('g:i A'); 
+			$stringBuilder .= '<span class="time">'. $eventTime .'</span>';
+
+		}
     } //end foreach    
 
 	$stringBuilder .= '</div>'; //.day
@@ -147,7 +174,6 @@ function calendarFormat($calArray){
 *Calls the categories of the calendar
 */
 function categoryCall(){
-	if (function_exists('curl_init')){
     $ch = curl_init('http://calendar.byu.edu/api/Categories');
     curl_setopt($ch, CURLOPT_HTTPHEADER, Array('Accept: application/json', 'charset=utf-8'));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -166,9 +192,6 @@ function categoryCall(){
     }
 
     return $catName;
-	} else {
-		drupal_set_message($message = t('The BYU Calendar module requires the PHP <a href="http://php.net/manual/en/curl.setup.php">cURL</a> library.'), $type = 'error');
-	}
 }
 
 /**
@@ -188,14 +211,16 @@ function byu_calendar_block_view($delta = '') {
 	 
 				//Iterate through the array and get only the selected categories
 				$categories = variable_get('byu_calendar_categories');
+				$isFeatured = variable_get('byu_calendar_featured');
 				$selectedCategories=''; 
 				
-				if (!empty($categories)){
+				//Pull specific selected categories only if categories were selected and featured events wasn't selected
+				if (!empty($categories) && empty($isFeatured)){
 					foreach($categories as $selected){
 						if ($selected!=0)
 							$selectedCategories .= $selected.','; 
 					}
-				}
+				}	
 	 
 				//Make the cURL request with the number of days desired.
 				$result = calendarCall($numOfDays, $selectedCategories);                
@@ -297,31 +322,44 @@ function byu_calendar_menu() {
  * @see byu_calendar_menu()
  */
 function byu_calendar_form($form, &$form_state) {
-  $form['description'] = array(
-    '#type' => 'item',
-    '#title' => t('BYU Calendar Module Settings'),
-    '#description' => t('Configure the settings of the BYU Calendar Module'),
-  );
-    
-  $form['byu_calendar_days'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Number of days to retrieve'),
-    '#default_value' => variable_get('byu_calendar_days', 5),
-    '#size' => 2,
-    '#maxlength' => 3,
-    '#description' => t('The number of days to pull from the calendar'),
-    '#required' => TRUE,
-  );
+	$form['settings'] = array(
+	  '#type' => 'fieldset', 
+	  '#title' => t('Calendar settings'),
+	  '#description' => t('Configure the settings of the BYU Calendar Module'),
+	);
+	
+	$form['settings']['byu_calendar_days'] = array(
+		'#type' => 'textfield',
+		'#title' => t('Number of days to retrieve'),
+		'#default_value' => variable_get('byu_calendar_days', 5),
+		'#size' => 2,
+		'#maxlength' => 3,
+		'#description' => t('Only days with events will be displayed'),
+		'#required' => TRUE,
+	);
+  
+	$form['settings']['byu_calendar_featured'] = array(
+	  '#type' => 'checkbox',  
+	  '#title' => t('Featured Events'),
+	  '#description' => t('Only pull featured events. (Imitates the BYU Homepage)'),
+	  '#default_value' => variable_get('byu_calendar_featured'),
+	);
+  
+  $form['categories'] = array(
+		'#type' => 'fieldset', 
+		'#title' => t('Category Selection'),
+		'#description' => t('Select all categories you want to pull from the calendar. If a parent category is selected, all sub-cateogories are selected. Leave blank to select all.'),
+		'#collapsible' => TRUE, 
+		'#collapsed' => FALSE,
+	  );
  
-  $form['byu_calendar_categories'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Categories Filter'),
-    '#description' => t('Select all categories you want to pull from the calendar. If a parent category is selected, all sub-cateogories are selected. Leave blank to select all.'),  
-    '#options' => categoryCall(),
-	'#default_value' => is_array(variable_get('byu_calendar_categories')) ? variable_get('byu_calendar_categories') : array() , //Populates the form again with previously selected categories
-  
-);
-  
+	$form['categories']['byu_calendar_categories'] = array(
+	  '#type' => 'checkboxes',
+	  '#title' => t('Select Categories'),
+	  '#options' => categoryCall(),
+	  '#default_value' => is_array(variable_get('byu_calendar_categories')) ? variable_get('byu_calendar_categories') : array() //Populates the form again with previously selected categories
+	);
+	
 	return system_settings_form($form);
 }
 

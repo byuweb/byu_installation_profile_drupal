@@ -1,6 +1,0 @@
-name = Simple Megamenu
-description = Adds additional attribute fields to menu items for megamenus.
-package = BYU Suite
-dependencies[] = menu
-core = 7.x
-stylesheets[all][] = simple_megamenu.css
