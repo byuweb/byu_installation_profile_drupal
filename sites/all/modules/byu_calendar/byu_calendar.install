@@ -1,19 +1,17 @@
 <?php
 
 /**
- * Checks if the site has the cURL PHP module installed on the webserver. This is required for the module to work.
+ * Checks if the site has the cURL PHP module installed on the webserver.
  */
 function byu_calendar_enable() {
     if (!function_exists('curl_init')){
-		drupal_set_message($message = t('You don\'t have cURL enabled on your server. The BYU Calendar module requires the PHP <a href="http://php.net/manual/en/curl.setup.php">cURL</a> library.'), $type = 'error');
+		drupal_set_message($message = t('You don\'t have cURL enabled on your server. The BYU Calendar module requires the PHP <a href="http://php.net/manual/en/curl.setup.php">cURL</a> extension.'), $type = 'error');
 		module_disable(array('byu_calendar'));
-	} else { 
-		//drupal_set_message($message = t('The BYU Calendar module was successfully enabled.'), $type = 'status');
 	}
 }
 
 /**
- * Deletes the variables in the DB if this module is uninstalled.
+ * Deletes the variables from the database if this module is uninstalled.
  */
 function byu_calendar_uninstall() {
 	variable_del('byu_calendar_days');

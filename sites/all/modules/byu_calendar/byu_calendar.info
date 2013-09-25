@@ -1,7 +1,8 @@
 name	    = BYU Calendar
 description = Pulls events from the BYU Calendar service and displays them on your site.
-core = 7.x
-	
-package = BYU Suite
+package		= BYU Suite
+core		= 7.x
+version		= 7.x-2.0
+
 stylesheets[all][] = byu_calendar.css
-configure = admin/config/services/byu_calendar
+configure = admin/config/byu/byu_calendar

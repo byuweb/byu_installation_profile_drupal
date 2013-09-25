@@ -226,7 +226,7 @@ function byu_calendar_block_view($delta = '') {
 				$result = calendarCall($numOfDays, $selectedCategories);                
         
 				//Print the formatted results.
-				$block['content'] =  '<div id="calendar">'.calendarFormat($result).'</div>';
+				$block['content'] =  '<div>'.calendarFormat($result).'</div>';
 			}
 			
     return $block;
@@ -240,14 +240,13 @@ function byu_calendar_block_view($delta = '') {
  */
 function byu_calendar_page($eventID) {
 
-	if (!is_numeric($eventID)) {
+	if (!is_numeric($eventID))
 		return array('#markup' => '<p>' . t('Invalid Event. Please go back and try again') . '</p>');
-	}
 	
 	$event = eventCall($eventID);
 
 	if (empty($event))
-			return array('#markup' => '<p>' . t('No such event found. Please go back and try again.') . '</p>');
+		return array('#markup' => '<p>' . t('No such event found. Please go back and try again.') . '</p>');
 	
 	drupal_set_title($event->Title);
 
@@ -272,7 +271,7 @@ function byu_calendar_page($eventID) {
 		$map = '';
 	}
 	
-	//I'm using Drupal Rendable arrayes here.
+	//I'm using Drupal Rendable arrays here.
 	$display =  array(
     'first_para' => array(
       '#type' => 'markup',
@@ -295,15 +294,15 @@ function byu_calendar_page($eventID) {
 function byu_calendar_menu() {
 	$items = array();
 
-	//Creates a page where 
+	//Creates a page where individual events can be viewed
 	$items['calendar/%'] = array(
-		'title' => 'BYU Calendar Error',
+		'title' => 'BYU Calendar Event',
 		'page callback' => 'byu_calendar_page',
 		'page arguments' => array(1),
 		'access callback' => TRUE,
 	);
   
-	$items['admin/config/services/byu_calendar'] = array(
+	$items['admin/config/byu/byu_calendar'] = array(
 		'title' => 'BYU Calendar',
 		'description' => 'Configuration for the BYU Calendar module',
 		'page callback' => 'drupal_get_form',

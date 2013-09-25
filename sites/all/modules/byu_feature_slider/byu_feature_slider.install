@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * Implements hook_install().
+ * 
+ * Runs this function install to create new content type in the node_type table in database.
+ * Drupal runs this function after hook_schema().
+ */
+function byu_feature_slider_install() {
+	// Turn off comments
+	variable_set('comment_byu_feature_slider', '0');
+	
+	// Set to publish but not promote to front page.
+	variable_set('node_options_byu_feature_slider', array('status'));
+}
+	
+
+/**
+ * Runs the function when the module is enabled
+ */
+function byu_feature_slider_enable() {	
+}
+
+/**
+ * Deletes the variables from the database if this module is uninstalled.
+ */
+function byu_feature_slider_uninstall() {
+	//Delete all the nodes of this content type:
+	$nids = db_select('node', 'n')
+		->fields('n', array('nid'))
+		->fields('n', array('type'))
+		->condition('n.type', 'byu_feature_slider')
+		->execute()
+		->fetchCol(); // returns an indexed array
+ 
+	// Delete all the nodes at once
+	node_delete_multiple($nids);
+	
+	//Delete the persistant variables from the variable table
+	variable_del('byu_slider_randomize');
+	variable_del('comment_byu_feature_slider');
+	variable_del('node_options_byu_feature_slider');
+	
+	//Delete the content type
+	node_type_delete('byu_feature_slider');
+	
+	// find all fields and delete instance
+	$instances = field_info_instances('node', 'byu_slider_feature');
+	foreach ($instances as $instance_name => $instance) {
+	  field_delete_instance($instance);
+	}
+	
+	//Node Type rebuild
+	node_types_rebuild();
+	
+	// purge all field information
+	field_purge_batch(1000);
+	
+	//TODO: Remove the 'Add Content' Menu Link from the navigation menu
+	
+	//Rebuild menu
+	menu_rebuild();
+	
+}
