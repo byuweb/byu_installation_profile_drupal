@@ -39,6 +39,7 @@ dependencies[] = date
 dependencies[] = features
 dependencies[] = imce
 dependencies[] = link
+dependencies[] = libraries
 dependencies[] = menu_expanded
 dependencies[] = pathauto
 dependencies[] = transliteration
