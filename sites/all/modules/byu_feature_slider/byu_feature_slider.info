@@ -1,0 +1,21 @@
+name		= BYU Feature Slider
+description = An attractive slider with a featured image, description, and link. As seen on BYU's homepage. 
+package		= BYU Suite
+core		= 7.x
+version		= 7.x-2.0
+
+dependencies[]	= "node"
+dependencies[]	= "image"
+dependencies[]	= "options"
+dependencies[]	= "text"
+dependencies[]	= "link"
+dependencies[]	= "color_field"
+
+files[] = byu_feature_slider.module
+files[] = byu_feature_slider.admin.inc
+
+stylesheets[all][] = byu_feature_slider.css
+
+scripts[] = slider.min.js
+
+configure = admin/config/byu/byu_feature_slider
