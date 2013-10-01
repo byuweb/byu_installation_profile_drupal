@@ -2053,7 +2053,7 @@ function system_block_info() {
     'cache' => DRUPAL_NO_CACHE,
     // Auto-enable in 'help' region by default, if the theme defines one.
     'status' => 1,
-    'region' => 'help',
+ //   'region' => 'help',
   );
   // System-defined menu blocks.
   foreach (menu_list_system_menus() as $menu_name => $title) {
