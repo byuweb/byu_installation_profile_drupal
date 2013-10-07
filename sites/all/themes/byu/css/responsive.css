@@ -1289,8 +1289,8 @@ body.sideNav #main-header, body.sideNav #search-menu, body.sideNav #content, bod
   #primary-nav .sub .links { width: 100%; }
   #primary-nav li.hover .mega, #primary-nav li.hover .sub, #primary-nav .highlight, #primary-nav .featured, #primary-nav hr { display: block; }
   #primary-nav hr { border: none; border-top: 1px solid #ddd; }
-  #primary-nav .mega li.featured { margin-bottom: 1em; padding-top: .5em; padding-bottom: 1em; border-bottom: 1px solid #ddd; }
-  #primary-nav .mega li.featured a { font-weight: bold; }
+  #primary-nav li.featured { margin-bottom: 1em; padding-top: .5em; padding-bottom: 1em; border-bottom: 1px solid #ddd; }
+  #primary-nav li.featured a { font-weight: bold; }
   #primary-nav .mega .links { float: left; width: 34%; margin-left: 3%; margin-right: 3%; }
   #primary-nav .mega .links.double { width: 44%; margin-right: 0; }
   #primary-nav .mega .links.double .featured .sublinks { padding-left: 5%; }
@@ -1358,7 +1358,7 @@ a.mybyu, a.sign-in, .open #search-button, #search-submit, .gcse-wrapper input.gs
 
 .nav-container .mega a, .nav-container .sub a { font-weight: 500; }
 
-#primary-nav .mega li.featured a { font-weight: 600; }
+#primary-nav li.featured a { font-weight: 600; }
 
 body th, body tfoot { font-weight: 500; }
 body strong, body dt { font-weight: 600; }
