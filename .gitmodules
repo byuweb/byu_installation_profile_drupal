@@ -1,0 +1,9 @@
+[submodule "Drupal-7-Template"]
+	path = Drupal-7-Template
+	url = https://github.com/byuweb/Drupal-7-Template.git
+[submodule "sites/all/themes/byu"]
+	path = sites/all/themes/byu
+	url = https://github.com/byuweb/Drupal-7-Template.git
+[submodule "sites/all/modules/megamenu"]
+	path = sites/all/modules/megamenu
+	url = https://github.com/byuweb/Drupal-Module-Megamenu.git
