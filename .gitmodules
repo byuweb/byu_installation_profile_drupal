@@ -7,3 +7,6 @@
 [submodule "sites/all/modules/megamenu"]
 	path = sites/all/modules/megamenu
 	url = https://github.com/byuweb/Drupal-Module-Megamenu.git
+[submodule ".\\sites\\all\\modules\\byu_megamenu"]
+	path = .\\sites\\all\\modules\\byu_megamenu
+	url = https://github.com/byuweb/Drupal-Module-Megamenu.git
