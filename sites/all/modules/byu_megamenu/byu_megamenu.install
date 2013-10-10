@@ -1,0 +1,75 @@
+<?php
+// $Id$
+/**
+ * Install themegamenu module.  Creates a table to store the menus
+ * to display in the mega dropdown associated with each menu item tab of the
+ * menu selected as the mega dropdown menu
+ * @file
+ */
+
+/**
+ * Implements hook_install().
+ * Use if you need to do something before it installs the schema
+ */
+function byu_megamenu_install() {
+}
+
+/**
+ * Implements hook_uninstall().
+ * Use if you need to do something before it uninstalls the schema
+ */
+function byu_megamenu_uninstall() {
+}
+
+/**
+ * Implements hook_schema().
+ */
+function byu_megamenu_schema() {
+  $schema['byu_megamenu'] = array(
+    'description' => 'A table to store the menus to display in the mega dropdown associated with each menu item tab of the menu selected as the mega dropdown menu',
+    'fields' => array(
+      'mlid' => array(
+        'description' => 'The mlid of the byu_megamenu menu item in the {menu_links} table',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+	  'mega_enabled' => array(
+        'description' => 'To enable megamenus',
+        'type' => 'int',
+        'default' => 0,
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'image_path' => array(
+        'description' => 'The image path for the highlight',
+        'type' => 'varchar',
+        'length' => 255,
+      ),
+      'image_alt' => array(
+        'description' => 'The alt text for the image',
+        'type' => 'varchar',
+        'length' => 255,
+      ),
+      'featured_text' => array(
+        'description' => 'The HTML for the dropdown menu associated with the {menu_links} item mlid',
+        'type' => 'text',
+        'size' => 'medium',
+      ),
+   	  'featured_link' => array(
+        'description' => 'To mark link item as featured',
+        'type' => 'int',
+        'default' => 0,
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+
+    ),
+    'unique_keys' => array(
+      'mlid' => array('mlid') 
+    ),
+    'primary key' => array('mlid'),
+  );
+
+  return $schema;
+}

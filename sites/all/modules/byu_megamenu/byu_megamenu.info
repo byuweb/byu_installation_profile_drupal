@@ -1,0 +1,6 @@
+name 		= BYU Megamenu
+description = Adds the ability to add mega dropdowns and pictures to menu items.
+package 	= BYU Suite
+core 		= 7.x
+dependencies[] 		= menu
+stylesheets[all][] 	= byu_megamenu.css
