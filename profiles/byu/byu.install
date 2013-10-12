@@ -153,16 +153,16 @@ function byu_install() {
   }
   $query->execute();
   
-	//Add CAS settings
+	//Add CAS settings 
 	variable_set('cas_server', 'cas.byu.edu');
 	variable_set('cas_version', 'S1');
 	variable_set('cas_uri', '/cas');
 	variable_set('cas_login_form', CAS_MAKE_DEFAULT);
 	
-	//Add Jquery update
+	//Add Jquery_update module settings
 	variable_set('jquery_update_compression_type', 'min');
 	variable_set('jquery_update_jquery_cdn', 'google');
-	variable_set('jquery_update_jquery_ver', '1.8');
+	variable_set('jquery_update_jquery_version', '1.8');
 	
 	if (!function_exists('curl_init')){
 		module_disable(array('CAS'));
