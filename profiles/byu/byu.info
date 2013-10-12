@@ -38,6 +38,7 @@ dependencies[] = ctools
 dependencies[] = date
 dependencies[] = features
 dependencies[] = imce
+dependencies[] = jquery_update
 dependencies[] = link
 dependencies[] = libraries
 dependencies[] = menu_expanded

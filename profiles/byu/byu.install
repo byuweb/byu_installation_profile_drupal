@@ -159,6 +159,11 @@ function byu_install() {
 	variable_set('cas_uri', '/cas');
 	variable_set('cas_login_form', CAS_MAKE_DEFAULT);
 	
+	//Add Jquery update
+	variable_set('jquery_update_compression_type', 'min');
+	variable_set('jquery_update_jquery_cdn', 'google');
+	variable_set('jquery_update_jquery_ver', '1.8');
+	
 	if (!function_exists('curl_init')){
 		module_disable(array('CAS'));
 		drupal_set_message($message = t('Please enable the cURL extention in PHP before using CAS.'), $type = 'error');
