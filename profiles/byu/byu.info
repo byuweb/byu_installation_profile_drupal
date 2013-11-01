@@ -36,7 +36,6 @@ dependencies[] = ckeditor_link
 dependencies[] = color_field
 dependencies[] = ctools
 dependencies[] = date
-dependencies[] = features
 dependencies[] = imce
 dependencies[] = link
 dependencies[] = libraries
