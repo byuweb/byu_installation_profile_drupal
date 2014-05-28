@@ -3,7 +3,7 @@ BYU Drupal Install Profile
 BYU Installation profile for Drupal 7
 Installs and configures a Drupal site with the BYU theme as well as a number of necessary modules and settings.
 
-###This package includes Drupal 7.23 with the following modules:
+###This package includes Drupal 7.28 with the following modules:
 * BYU Calendar Module
 * BYU Megamenu Module
 * BYU Slider Module
