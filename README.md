@@ -12,7 +12,7 @@ Installs and configures a Drupal site with the BYU theme as well as a number of 
 * and more!
 
 ##Installation Instructions
-1. You'll need to configure your server to run drupal. See [Drupal Requirements](https://drupal.org/requirements/php) for more details. Don't forget to enable the PHP cURL extention.
+1. You'll need to configure your server to run drupal. See [Drupal Requirements](https://drupal.org/requirements/php) for more details. Don't forget to enable the PHP cURL extension.
 2. Create a database for your Drupal installation
 3. Copy the entire folder to your web server's root directory
 4. Run the installation script by visiting your site in a web browser(e.g. example.byu.edu/install.php)
