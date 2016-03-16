@@ -4,6 +4,7 @@
 <!--[if IE 8]>    <html lang="en" class="no-js oldie lt-ie9"><![endif]-->
 <!--[if gt IE 8]><!-->
 <html lang="en" class="no-js">
+  <head>
   <?php print $head; ?>
   <title><?php print $head_title; ?></title>
 
