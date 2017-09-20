@@ -1,1 +1,22 @@
 
+[submodule "sites/all/themes/byu2017_d7"]
+	path = sites/all/themes/byu2017_d7
+	url = https://github.com/byuweb/byu2017_d7.git
+[submodule "sites/all/modules/custom/views_card_d7"]
+	path = sites/all/modules/custom/views_card_d7
+	url = https://github.com/byuweb/views_card_d7.git
+[submodule "sites/all/modules/custom/calendar_widget_d7"]
+	path = sites/all/modules/custom/calendar_widget_d7
+	url = https://github.com/byuweb/calendar_widget_d7.git
+[submodule "sites/all/modules/custom/views_news_d7"]
+	path = sites/all/modules/custom/views_news_d7
+	url = https://github.com/byuweb/views_news_d7.git
+[submodule "sites/all/modules/custom/Hero-Slider-Module_d7"]
+	path = sites/all/modules/custom/Hero-Slider-Module_d7
+	url = https://github.com/byuweb/Hero-Slider-Module_d7.git
+[submodule "sites/all/modules/custom/menu_landing_views_d7"]
+	path = sites/all/modules/custom/menu_landing_views_d7
+	url = https://github.com/byuweb/menu_landing_views_d7.git
+[submodule "sites/all/modules/custom/YouTube-Hero-Module_d7"]
+	path = sites/all/modules/custom/YouTube-Hero-Module_d7
+	url = https://github.com/byuweb/YouTube-Hero-Module_d7.git
