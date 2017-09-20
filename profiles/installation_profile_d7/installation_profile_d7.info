@@ -1,0 +1,111 @@
+; Packaging information for installation_profile_d7
+name = "installation Profile d7"
+description = ""
+exclusive = "1"
+core = "7.x"
+; ----------
+; Dependencies
+; ----------
+; Administration
+dependencies[] = admin_menu
+dependencies[] = admin_views
+dependencies[] = menu_expanded
+dependencies[] = module_filter
+; BYU Custom
+dependencies[] = menu_landing_views_d7
+dependencies[] = views_card_d7
+; Chaos tool suite
+dependencies[] = ctools
+; Core
+dependencies[] = block
+dependencies[] = color
+dependencies[] = comment
+dependencies[] = contact
+dependencies[] = contextual
+dependencies[] = dashboard
+dependencies[] = dblog
+dependencies[] = field
+dependencies[] = field_sql_storage
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = filter
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = node
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = rdf
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = system
+dependencies[] = taxonomy
+dependencies[] = text
+dependencies[] = toolbar
+dependencies[] = update
+dependencies[] = user
+; Development
+dependencies[] = profiler_builder
+; Fields
+dependencies[] = entityreference
+dependencies[] = field_formatter_class
+dependencies[] = link
+; Other
+dependencies[] = backup_migrate
+dependencies[] = entity
+dependencies[] = entity_token
+dependencies[] = field_formatter_settings
+dependencies[] = libraries
+dependencies[] = menu_attributes
+dependencies[] = pathauto
+dependencies[] = token
+dependencies[] = views_menu_children_filter
+; User interface
+dependencies[] = jquery_update
+; Views
+dependencies[] = views
+dependencies[] = views_bulk_operations
+dependencies[] = views_ui
+
+; ----------
+; Variables
+; ----------
+variables[admin_theme] = 'seven'
+variables[cache_class_cache_ctools_css] = 'CToolsCssCache'
+variables[date_default_timezone] = 'America/Denver'
+variables[entityreference:base-tables][comment][0] = 'comment'
+variables[entityreference:base-tables][comment][1] = 'cid'
+variables[entityreference:base-tables][node][0] = 'node'
+variables[entityreference:base-tables][node][1] = 'nid'
+variables[entityreference:base-tables][file][0] = 'file_managed'
+variables[entityreference:base-tables][file][1] = 'fid'
+variables[entityreference:base-tables][taxonomy_term][0] = 'taxonomy_term_data'
+variables[entityreference:base-tables][taxonomy_term][1] = 'tid'
+variables[entityreference:base-tables][taxonomy_vocabulary][0] = 'taxonomy_vocabulary'
+variables[entityreference:base-tables][taxonomy_vocabulary][1] = 'vid'
+variables[entityreference:base-tables][user][0] = 'users'
+variables[entityreference:base-tables][user][1] = 'uid'
+variables[filter_fallback_format] = 'plain_text'
+variables[module_filter_recent_modules][field_formatter_class] = 1505842375
+variables[module_filter_recent_modules][field_formatter_settings] = 1505842375
+variables[module_filter_recent_modules][profiler_builder] = 1505842445
+variables[module_filter_recent_modules][admin_menu] = 1505842543
+variables[module_filter_recent_modules][admin_menu_toolbar] = 1505842625
+variables[module_filter_recent_modules][admin_devel] = 1505842673
+variables[node_admin_theme] = '1'
+variables[node_options_page][0] = 'status'
+variables[pathauto_blog_pattern] = 'blogs/[user:name]'
+variables[pathauto_forum_pattern] = '[term:vocabulary]/[term:name]'
+variables[pathauto_node_pattern] = 'content/[node:title]'
+variables[pathauto_punctuation_hyphen] = 1
+variables[pathauto_taxonomy_term_pattern] = '[term:vocabulary]/[term:name]'
+variables[pathauto_user_pattern] = 'users/[user:name]'
+variables[theme_default] = 'byu2017_d7'
+variables[user_pictures] = '1'
+variables[user_picture_dimensions] = '1024x1024'
+variables[user_picture_file_size] = '800'
+variables[user_picture_style] = 'thumbnail'
+variables[user_register] = 2
+
