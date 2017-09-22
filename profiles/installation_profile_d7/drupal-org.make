@@ -1,4 +1,4 @@
-; installation_profile_d7 make file for d.o. usage
+; byu_drupal_7_install make file for d.o. usage
 core = "7.x"
 api = "2"
 
@@ -9,9 +9,6 @@ projects[admin_menu][subdir] = "contrib"
 
 projects[admin_views][version] = "1.6"
 projects[admin_views][subdir] = "contrib"
-
-projects[menu_expanded][version] = "1.0-beta1"
-projects[menu_expanded][subdir] = "contrib"
 
 projects[module_filter][version] = "2.1"
 projects[module_filter][subdir] = "contrib"
@@ -34,6 +31,9 @@ projects[field_formatter_class][subdir] = "contrib"
 projects[link][version] = "1.2"
 projects[link][subdir] = "contrib"
 
+projects[a11y][version] = "1.1"
+projects[a11y][subdir] = "contrib"
+
 projects[backup_migrate][version] = "2.8"
 projects[backup_migrate][subdir] = "contrib"
 
@@ -49,6 +49,15 @@ projects[libraries][subdir] = "contrib"
 projects[menu_attributes][version] = "1.0"
 projects[menu_attributes][subdir] = "contrib"
 
+projects[menu_node][version] = "1.2"
+projects[menu_node][subdir] = "contrib"
+
+projects[menu_node_views][version] = "1.x-dev"
+projects[menu_node_views][subdir] = "contrib"
+
+projects[node_clone][version] = "1.0"
+projects[node_clone][subdir] = "contrib"
+
 projects[pathauto][version] = "1.2"
 projects[pathauto][subdir] = "contrib"
 
@@ -57,6 +66,12 @@ projects[token][subdir] = "contrib"
 
 projects[views_menu_children_filter][version] = "1.0-rc2"
 projects[views_menu_children_filter][subdir] = "contrib"
+
+projects[metatag][version] = "1.22"
+projects[metatag][subdir] = "contrib"
+
+projects[eim][version] = "1.3"
+projects[eim][subdir] = "contrib"
 
 projects[jquery_update][version] = "2.7"
 projects[jquery_update][subdir] = "contrib"

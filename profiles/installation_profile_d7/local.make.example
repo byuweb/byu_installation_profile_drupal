@@ -1,4 +1,4 @@
-; installation_profile_d7 make file for local development
+; byu_drupal_7_install make file for local development
 core = "7.x"
 api = "2"
 
@@ -10,4 +10,20 @@ includes[] = "drupal-org.make"
 
 projects[menu_landing_views_d7][version] = "" ; TODO add version
 projects[menu_landing_views_d7][subdir] = "custom"
+
+; +++++ Libraries +++++
+
+; CAS
+libraries[CAS][directory_name] = "CAS"
+libraries[CAS][type] = "library"
+libraries[CAS][destination] = "libraries"
+libraries[CAS][download][type] = "get"
+libraries[CAS][download][url] = "" ; TODO add download URI
+
+; fontawesome
+libraries[fontawesome][directory_name] = "fontawesome"
+libraries[fontawesome][type] = "library"
+libraries[fontawesome][destination] = "libraries"
+libraries[fontawesome][download][type] = "get"
+libraries[fontawesome][download][url] = "" ; TODO add download URI
 
