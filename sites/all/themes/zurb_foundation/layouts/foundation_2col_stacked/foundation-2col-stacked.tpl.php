@@ -19,25 +19,25 @@
 <?php !empty($css_id) ? print '<div id="' . $css_id . '">' : ''; ?>
   <?php if ($content['top']): ?>
     <div class="row">
-      <div class="medium-12 columns">
-        <?php print $content['top']; ?>
+      <div class="large-12 columns">
+				<?php print $content['top']; ?>
       </div>
     </div>
   <?php endif; ?>
 
   <div class="row">
-    <div class="medium-6 columns">
+    <div class="large-6 columns">
       <?php print $content['left']; ?>
     </div>
-    <div class="medium-6 columns">
+    <div class="large-6 columns">
       <?php print $content['right']; ?>
     </div>
   </div>
 
   <?php if ($content['bottom']): ?>
     <div class="row">
-      <div class="medium-12 columns">
-        <?php print $content['bottom']; ?>
+      <div class="large-12 columns">
+				<?php print $content['bottom']; ?>
       </div>
     </div>
   <?php endif; ?>

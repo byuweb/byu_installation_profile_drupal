@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Default theme implementation to display a node.
@@ -78,8 +79,9 @@
 
   <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
-    <h2<?php print $title_attributes; ?>>
-      <a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
+    <?php if (!$page): ?>
+      <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
+    <?php endif; ?>
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
@@ -93,11 +95,11 @@
   <?php endif; ?>
 
   <?php
-  // We hide the comments and links now so that we can render them later.
-  hide($content['comments']);
-  hide($content['links']);
-  hide($content['field_tags']);
-  print render($content);
+    // We hide the comments and links now so that we can render them later.
+    hide($content['comments']);
+    hide($content['links']);
+    hide($content['field_tags']);
+    print render($content);
   ?>
 
   <?php if (!empty($content['field_tags']) && !$is_front): ?>
