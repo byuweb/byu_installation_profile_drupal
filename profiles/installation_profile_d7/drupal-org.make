@@ -1,4 +1,4 @@
-; byu_drupal_7_install make file for d.o. usage
+; installation_profile_d7 make file for d.o. usage
 core = "7.x"
 api = "2"
 
@@ -86,6 +86,15 @@ projects[views_bulk_operations][subdir] = "contrib"
 
 ; zurb_foundation
 projects[zurb_foundation][type] = "theme"
-projects[zurb_foundation][version] = "5.0-rc7"
+projects[zurb_foundation][version] = "4.1"
 projects[zurb_foundation][subdir] = "contrib"
+
+; +++++ Libraries +++++
+
+; CKEditor
+libraries[ckeditor][directory_name] = "ckeditor"
+libraries[ckeditor][type] = "library"
+libraries[ckeditor][destination] = "libraries"
+libraries[ckeditor][download][type] = "get"
+libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%203.6.6.1/ckeditor_3.6.6.1.tar.gz"
 

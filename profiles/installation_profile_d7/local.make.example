@@ -1,4 +1,4 @@
-; byu_drupal_7_install make file for local development
+; installation_profile_d7 make file for local development
 core = "7.x"
 api = "2"
 

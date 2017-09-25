@@ -6,7 +6,7 @@
  */
 if (!function_exists("system_form_install_configure_form_alter")) {
   function system_form_install_configure_form_alter(&$form, $form_state) {
-    $form['site_information']['site_name']['#default_value'] = 'BYU Drupal 7 Install';
+    $form['site_information']['site_name']['#default_value'] = 'installation profile d7';
   }
 }
 
@@ -18,7 +18,7 @@ if (!function_exists("system_form_install_configure_form_alter")) {
 if (!function_exists("system_form_install_select_profile_form_alter")) {
   function system_form_install_select_profile_form_alter(&$form, $form_state) {
     foreach ($form['profile'] as $key => $element) {
-      $form['profile'][$key]['#value'] = 'byu_drupal_7_install';
+      $form['profile'][$key]['#value'] = 'installation_profile_d7';
     }
   }
 }
